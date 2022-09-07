@@ -3,7 +3,7 @@
     <tr>
       <th>image</th>
       <th>name</th>
-      <th colspan="3"></th>
+      <th colspan="6"></th>
     </tr>
   </thead>
   <tbody>
@@ -11,6 +11,21 @@
       <tr>
         <td><%= image_tag user.get_profile_image, size: '50x50' %></td>
         <td><%= user.name %></td>
+        <td>フォロー数: <%= user.followings.count %></td>
+        <td>フォロワー数: <%= user.followers.count %></td>
+        <td><% unless user.id == current_user.id %>
+              <% unless current_user.following?(user) %>
+                <%= link_to user_relationships_path(user), method: :post do %>
+                  <p>フォローする</p>
+                <% end %>
+              <% else %>
+                <%= link_to user_relationships_path(user), method: :delete do %>
+                  <p>フォロー外す</p>
+                <% end %>
+              <% end %>
+            <% end %>
+        </td>
+
         <td><%= link_to 'Show', user %></td>
       </tr>
     <% end %>
